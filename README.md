@@ -22,17 +22,22 @@ Clover is me exploring C++ backend systems in the simplest way I know how. Nothi
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### One command to run
 
 ```bash
 # Clone the starter template
-git clone https://github.com/jhayonline/clover-starter.git my-app
+git clone git@github.com:jhayonline/clover-framework.git
+
+# Change the name of the app
+mv clover-framework my-app
+
+# Go into it
 cd my-app
 
 # Make the CLI executable
 chmod +x clover
 
 # Build and run
-./clover
+./clover run
