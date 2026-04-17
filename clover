@@ -2,23 +2,63 @@
 
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m'
 
 # Get app name from CMakeLists.txt
 APP_NAME=$(grep "project(" CMakeLists.txt | sed 's/project(\(.*\))/\1/' | tr -d ' ')
 
-# Create build dir if needed
+echo -e "${BLUE}🍀 Clover${NC}"
+echo ""
+
+# Check for build directory
+echo -e "${YELLOW}~> Checking for build directory...${NC}"
 if [ ! -d "build" ]; then
+    echo -e "  ${YELLOW}Build directory not found${NC}"
+    echo -e "  ${YELLOW}Creating build directory...${NC}"
     mkdir build
+    echo -e "  ${GREEN}Build directory created${NC}"
+else
+    echo -e "  ${GREEN}Build directory exists${NC}"
 fi
 
-# Build
+# Change to build directory
+echo -e "${YELLOW}~> Changing to build directory...${NC}"
 cd build
-cmake .. > /dev/null 2>&1
-make -j$(nproc)
+echo -e "  ${GREEN}Now in $(pwd)${NC}"
 
-# Run
-echo -e "${GREEN}Starting $APP_NAME...${NC}"
-echo -e "${BLUE}Server at http://localhost:3000${NC}"
+# Run CMake
+echo -e "${YELLOW}~> Running CMake configuration...${NC}"
+cmake ..
+if [ $? -eq 0 ]; then
+    echo -e "  ${GREEN}CMake configuration complete${NC}"
+else
+    echo -e "  ${RED}CMake configuration failed${NC}"
+    exit 1
+fi
+
+# Run Make
+echo -e "${YELLOW}~> Building with make...${NC}"
+make -j$(nproc)
+if [ $? -eq 0 ]; then
+    echo -e "  ${GREEN}Build complete${NC}"
+else
+    echo -e "  ${RED}Build failed${NC}"
+    exit 1
+fi
+
+# Check if executable exists
+echo -e "${YELLOW}~> Checking for executable...${NC}"
+if [ -f "./$APP_NAME" ]; then
+    echo -e "  ${GREEN}Executable found: $APP_NAME${NC}"
+else
+    echo -e "  ${RED}Executable not found: $APP_NAME${NC}"
+    exit 1
+fi
+
+# Run the server
+echo ""
+echo -e "${YELLOW}Press Ctrl+C to stop${NC}"
 echo ""
 ./$APP_NAME
