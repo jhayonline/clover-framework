@@ -1,0 +1,24 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# Get app name from CMakeLists.txt
+APP_NAME=$(grep "project(" CMakeLists.txt | sed 's/project(\(.*\))/\1/' | tr -d ' ')
+
+# Create build dir if needed
+if [ ! -d "build" ]; then
+    mkdir build
+fi
+
+# Build
+cd build
+cmake .. > /dev/null 2>&1
+make -j$(nproc)
+
+# Run
+echo -e "${GREEN}Starting $APP_NAME...${NC}"
+echo -e "${BLUE}Server at http://localhost:3000${NC}"
+echo ""
+./$APP_NAME

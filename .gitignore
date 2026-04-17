@@ -1,0 +1,4 @@
+build/
+*.db
+config.yaml
+.DS_Store
