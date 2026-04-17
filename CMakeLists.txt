@@ -14,10 +14,11 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(clover)
 
-add_executable(clover_app src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
 
-target_include_directories(myapp PRIVATE ${clover_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${clover_SOURCE_DIR}/include)
 
-target_link_libraries(myapp PRIVATE clover)
+target_link_libraries(${PROJECT_NAME} PRIVATE clover)
 
 file(COPY config.yaml DESTINATION ${CMAKE_BINARY_DIR})
+
